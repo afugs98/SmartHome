@@ -3,3 +3,5 @@
 /examples/*/build
 /examples/*/firmware
 .DS_Store
+examples/build/
+examples/firmware/

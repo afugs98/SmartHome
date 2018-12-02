@@ -195,21 +195,21 @@ void led_saturation_set(homekit_value_t value) {
     led_string_set();
 }
 
-homekit_characteristic_t name = HOMEKIT_CHARACTERISTIC_(NAME, "Sample LED Strip");
+homekit_characteristic_t name = HOMEKIT_CHARACTERISTIC_(NAME, "Led_Strip");
 
 homekit_accessory_t *accessories[] = {
     HOMEKIT_ACCESSORY(.id = 1, .category = homekit_accessory_category_lightbulb, .services = (homekit_service_t*[]) {
         HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics = (homekit_characteristic_t*[]) {
             &name,
-            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "Generic"),
-            HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "037A2BABF19D"),
+            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "TrapHouse"),
+            HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "047C2BCB619D"),
             HOMEKIT_CHARACTERISTIC(MODEL, "LEDStrip"),
-            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.1"),
+            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "4.20"),
             HOMEKIT_CHARACTERISTIC(IDENTIFY, led_identify),
             NULL
         }),
         HOMEKIT_SERVICE(LIGHTBULB, .primary = true, .characteristics = (homekit_characteristic_t*[]) {
-            HOMEKIT_CHARACTERISTIC(NAME, "Sample LED Strip"),
+            HOMEKIT_CHARACTERISTIC(NAME, "Led_Strip"),
             HOMEKIT_CHARACTERISTIC(
                 ON, true,
                 .getter = led_on_get,
@@ -254,11 +254,11 @@ void user_init(void)
    // accessory name suffix.
    uint8_t macaddr[6];
    sdk_wifi_get_macaddr(STATION_IF, macaddr);
-   int name_len = snprintf(NULL, 0, "Outlet-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
+   int name_len = snprintf(NULL, 0, "Led_Strip-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
    char *name_value = malloc(name_len + 1);
-   snprintf(name_value, name_len + 1, "Outlet-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
+   snprintf(name_value, name_len + 1, "Led_Strip-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
    name.value = HOMEKIT_STRING(name_value);
 
-   wifi_config_init("TrapHouse:", NULL, on_wifi_ready);
+   wifi_config_init("TrapHouse", NULL, on_wifi_ready);
    led_init();
 }

@@ -27,7 +27,7 @@
 #include <homekit/characteristics.h>
 #include <wifi_config.h>
 
-const int led_gpio = 2;
+const int led_gpio = 0;
 void led_on_callback(homekit_characteristic_t *_ch, homekit_value_t on, void *context);
 
 void led_write(bool on)

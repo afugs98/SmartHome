@@ -96,12 +96,15 @@ homekit_server_config_t config = {
 };
 
 void on_wifi_ready() {
+    printf("-----got to the server init part\n");
     homekit_server_init(&config);
 }
 
 void user_init(void) {
     uart_set_baud(0, 115200);
 
+    printf("----got to the wifi init part\n");
     wifi_config_init("my-accessory", NULL, on_wifi_ready);
     led_init();
+    printf("-----inited the led\n");
 }

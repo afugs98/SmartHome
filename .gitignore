@@ -5,3 +5,5 @@
 .DS_Store
 examples/build/
 examples/firmware/
+.cproject
+.project

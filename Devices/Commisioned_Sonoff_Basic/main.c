@@ -147,10 +147,10 @@ homekit_accessory_t *accessories[] = {
     HOMEKIT_ACCESSORY(.id=1, .category=homekit_accessory_category_switch, .services=(homekit_service_t*[]){
         HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics=(homekit_characteristic_t*[]){
             &name,
-            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "iTEAD"),
-            HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "037A2BABF19D"),
-            HOMEKIT_CHARACTERISTIC(MODEL, "Basic"),
-            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.1.6"),
+            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "TrapHouse"),
+            HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "032A3BCBF19D"),
+            HOMEKIT_CHARACTERISTIC(MODEL, "SonoffGen1"),
+            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "4.20"),
             HOMEKIT_CHARACTERISTIC(IDENTIFY, switch_identify),
             NULL
         }),
@@ -191,7 +191,7 @@ void user_init(void) {
 
     create_accessory_name();
     
-    wifi_config_init("sonoff-switch", NULL, on_wifi_ready);
+    wifi_config_init("TrapHouse_Sonoff", NULL, on_wifi_ready);
     gpio_init();
 
     if (button_create(button_gpio, 0, 4000, button_callback)) {

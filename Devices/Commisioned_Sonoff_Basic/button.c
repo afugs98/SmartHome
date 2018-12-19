@@ -1,4 +1,4 @@
-#include "../Commisioned_Sonoff_Basic/button.h"
+#include "button.h"
 
 #include <string.h>
 #include <esplibs/libmain.h>

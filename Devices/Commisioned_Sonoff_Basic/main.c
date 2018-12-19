@@ -34,7 +34,7 @@
 #include <homekit/characteristics.h>
 #include <wifi_config.h>
 
-#include "../Commisioned_Sonoff_Basic/button.h"
+#include "button.h"
 
 // The GPIO pin that is connected to the relay on the Sonoff Basic.
 const int relay_gpio = 12;

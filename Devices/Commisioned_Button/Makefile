@@ -6,7 +6,7 @@ EXTRA_COMPONENTS = \
 	$(abspath ../../components/cJSON) \
 	$(abspath ../../components/homekit)
 
-BUTTON_PIN ?= 4
+BUTTON_PIN ?= 0
 
 FLASH_SIZE ?= 32
 

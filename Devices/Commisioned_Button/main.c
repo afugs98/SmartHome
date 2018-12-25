@@ -17,19 +17,6 @@
 #error BUTTON_PIN is not specified
 #endif
 
-//static void wifi_init()
-//{
-//   struct sdk_station_config wifi_config =
-//   {
-//      .ssid = WIFI_SSID,
-//      .password = WIFI_PASSWORD,
-//   };
-//
-//   sdk_wifi_set_opmode(STATION_MODE);
-//   sdk_wifi_station_set_config(&wifi_config);
-//   sdk_wifi_station_connect();
-//}
-
 void button_identify(homekit_value_t _value)
 {
    printf("Button identify\n");
@@ -70,10 +57,10 @@ homekit_accessory_t *accessories[] =
          ACCESSORY_INFORMATION,
          .characteristics=(homekit_characteristic_t*[]) {
          &name,
-         HOMEKIT_CHARACTERISTIC(MANUFACTURER, "HaPK"),
-         HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "0012345"),
-         HOMEKIT_CHARACTERISTIC(MODEL, "MyButton"),
-         HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.1"),
+         HOMEKIT_CHARACTERISTIC(MANUFACTURER, "TrapHouse"),
+         HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "032A3BCBF19D"),
+         HOMEKIT_CHARACTERISTIC(MODEL, "ButtonGen1"),
+         HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "4.20"),
          HOMEKIT_CHARACTERISTIC(IDENTIFY, button_identify),
          NULL
          },
@@ -131,16 +118,3 @@ void user_init(void)
       printf("Failed to initialize button\n");
    }
 }
-
-//void user_init(void)
-//{
-//   uart_set_baud(0, 115200);
-//
-//   wifi_init();
-//   if(button_create(BUTTON_PIN, button_callback))
-//   {
-//      printf("Failed to initialize button\n");
-//   }
-//   homekit_server_init(&config);
-//}
-

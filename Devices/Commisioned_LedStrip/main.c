@@ -22,7 +22,7 @@
 
 #include <homekit/homekit.h>
 #include <homekit/characteristics.h>
-#include "wifi.h"
+#include <wifi_config.h>
 #include "ws2812_i2s/ws2812_i2s.h"
 
 #define LED_ON 0                // this is the value to write to GPIO for led on (0 = GPIO low)
@@ -121,18 +121,18 @@ void led_string_set(void)
    led_string_fill(rgb);
 }
 
-static void wifi_init()
-{
-   struct sdk_station_config wifi_config =
-   {
-      .ssid = "esp32",
-      .password = "123456789",
-   };
-
-   sdk_wifi_set_opmode(STATION_MODE);
-   sdk_wifi_station_set_config(&wifi_config);
-   sdk_wifi_station_connect();
-}
+//static void wifi_init()
+//{
+//   struct sdk_station_config wifi_config =
+//   {
+//      .ssid = "esp32",
+//      .password = "123456789",
+//   };
+//
+//   sdk_wifi_set_opmode(STATION_MODE);
+//   sdk_wifi_station_set_config(&wifi_config);
+//   sdk_wifi_station_connect();
+//}
 
 void led_init()
 {
@@ -299,7 +299,7 @@ void on_wifi_ready()
 
 void user_init(void)
 {
-   // uart_set_baud(0, 115200);
+    uart_set_baud(0, 115200);
 
    // This example shows how to use same firmware for multiple similar accessories
    // without name conflicts. It uses the last 3 bytes of accessory's MAC address as
@@ -311,10 +311,8 @@ void user_init(void)
    snprintf(name_value, name_len + 1, "Sample LED Strip-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
    name.value = HOMEKIT_STRING(name_value);
 
-//    wifi_init();
    led_init();
    wifi_config_init("TrapHouse", NULL, on_wifi_ready);
-//
 }
 
 //

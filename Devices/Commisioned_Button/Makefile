@@ -1,22 +1,20 @@
-PROGRAM = wifi_config
+PROGRAM = button
 
 EXTRA_COMPONENTS = \
 	extras/http-parser \
 	extras/dhcpserver \
-	extras/i2s_dma \
-	extras/ws2812_i2s \
 	$(abspath ../../components/wifi_config) \
 	$(abspath ../../components/wolfssl) \
 	$(abspath ../../components/cJSON) \
 	$(abspath ../../components/homekit)
 
+BUTTON_PIN ?= 0
+
 FLASH_SIZE ?= 32
 
-EXTRA_CFLAGS += -I../.. -DHOMEKIT_SHORT_APPLE_UUIDS
+EXTRA_CFLAGS += -I../.. -DHOMEKIT_SHORT_APPLE_UUIDS -DBUTTON_PIN=$(BUTTON_PIN)
 
 include $(SDK_PATH)/common.mk
-
-LIBS += m
 
 monitor:
 	$(FILTEROUTPUT) --port $(ESPPORT) --baud 115200 --elf $(PROGRAM_OUT)

@@ -23,6 +23,9 @@
 #define LED_COUNT 127            // this is the number of WS2812B leds on the strip
 #define LED_RGB_SCALE 255       // this is the scaling factor used for color conversion
 
+#define DEVICE_PASSCODE "222-22-222"
+#define DEVICE_SETUP_ID "I420"
+
 // Global variables
 float led_hue = 0;              // hue is scaled 0 to 360
 float led_saturation = 59;      // saturation is scaled 0 to 100
@@ -91,8 +94,8 @@ void led_string_fill(ws2812_pixel_t rgb)
 void led_string_set(void)
 {
    ws2812_pixel_t rgb =
-   {
-   { 0, 0, 0, 0 } };
+      {
+         { 0, 0, 0, 0 } };
 
    if(led_on)
    {
@@ -129,11 +132,11 @@ void led_init()
 void led_identify_task(void *_args)
 {
    const ws2812_pixel_t COLOR_PINK =
-   {
-   { 255, 0, 127, 0 } };
+      {
+         { 255, 0, 127, 0 } };
    const ws2812_pixel_t COLOR_BLACK =
-   {
-   { 0, 0, 0, 0 } };
+      {
+         { 0, 0, 0, 0 } };
 
    for(int i = 0; i < 3; i++)
    {
@@ -223,63 +226,83 @@ void led_saturation_set(homekit_value_t value)
    led_string_set();
 }
 
-homekit_characteristic_t name = HOMEKIT_CHARACTERISTIC_(NAME, "Sample LED Strip");
+homekit_characteristic_t name = HOMEKIT_CHARACTERISTIC_(NAME, "TrapHouse LED Strip");
 
 homekit_accessory_t *accessories[] =
-{
-   HOMEKIT_ACCESSORY(.id = 1, .category = homekit_accessory_category_lightbulb, .services = (homekit_service_t*[]) {
-      HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics = (homekit_characteristic_t*[]) {
-      &name,
-      HOMEKIT_CHARACTERISTIC(MANUFACTURER, "Generic"),
-      HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "037A2BABF19D"),
-      HOMEKIT_CHARACTERISTIC(MODEL, "LEDStrip"),
-      HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.1"),
-      HOMEKIT_CHARACTERISTIC(IDENTIFY, led_identify),
+   {
+      HOMEKIT_ACCESSORY(.id = 1, .category = homekit_accessory_category_lightbulb, .services = (homekit_service_t*[]) {
+         HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics = (homekit_characteristic_t*[]) {
+         &name,
+         HOMEKIT_CHARACTERISTIC(MANUFACTURER, "TrapHosue"),
+         HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "037A2BABF19D"),
+         HOMEKIT_CHARACTERISTIC(MODEL, "LEDStrip"),
+         HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "4.20"),
+         HOMEKIT_CHARACTERISTIC(IDENTIFY, led_identify),
+         NULL
+         }),
+         HOMEKIT_SERVICE(LIGHTBULB, .primary = true, .characteristics = (homekit_characteristic_t*[]) {
+         HOMEKIT_CHARACTERISTIC(NAME, "RGB Led Strip"),
+         HOMEKIT_CHARACTERISTIC(
+         ON, true,
+         .getter = led_on_get,
+         .setter = led_on_set
+         ),
+         HOMEKIT_CHARACTERISTIC(
+         BRIGHTNESS, 100,
+         .getter = led_brightness_get,
+         .setter = led_brightness_set
+         ),
+         HOMEKIT_CHARACTERISTIC(
+         HUE, 0,
+         .getter = led_hue_get,
+         .setter = led_hue_set
+         ),
+         HOMEKIT_CHARACTERISTIC(
+         SATURATION, 0,
+         .getter = led_saturation_get,
+         .setter = led_saturation_set
+         ),
+         NULL
+         }),
+         NULL
+         }),
       NULL
-      }),
-      HOMEKIT_SERVICE(LIGHTBULB, .primary = true, .characteristics = (homekit_characteristic_t*[]) {
-      HOMEKIT_CHARACTERISTIC(NAME, "Sample LED Strip"),
-      HOMEKIT_CHARACTERISTIC(
-      ON, true,
-      .getter = led_on_get,
-      .setter = led_on_set
-      ),
-      HOMEKIT_CHARACTERISTIC(
-      BRIGHTNESS, 100,
-      .getter = led_brightness_get,
-      .setter = led_brightness_set
-      ),
-      HOMEKIT_CHARACTERISTIC(
-      HUE, 0,
-      .getter = led_hue_get,
-      .setter = led_hue_set
-      ),
-      HOMEKIT_CHARACTERISTIC(
-      SATURATION, 0,
-      .getter = led_saturation_get,
-      .setter = led_saturation_set
-      ),
-      NULL
-      }),
-      NULL
-      }),
-   NULL
-};
+   };
 
 homekit_server_config_t config =
-{
-   .accessories = accessories,
-   .password = "111-11-111"
-};
+   {
+      .accessories = accessories,
+      .password = DEVICE_PASSCODE,
+      .setupId = DEVICE_SETUP_ID,
+   };
 
 void on_wifi_ready()
 {
    homekit_server_init(&config);
 }
 
+void SetTextToBlue()
+{
+   printf("\033[1;36m");
+}
+
+void ResetTextColor()
+{
+   printf("\033[0m");
+}
+
 void user_init(void)
 {
-    uart_set_baud(0, 115200);
+   uart_set_baud(0, 115200);
+
+   printf("Create QR code with password: ");
+   SetTextToBlue();
+   printf("%s", DEVICE_PASSCODE);
+   ResetTextColor();
+   printf(" and setup ID: ");
+   SetTextToBlue();
+   printf("%s\n", DEVICE_SETUP_ID);
+   ResetTextColor();
 
    // This example shows how to use same firmware for multiple similar accessories
    // without name conflicts. It uses the last 3 bytes of accessory's MAC address as

@@ -18,6 +18,8 @@
 #include <wifi_config.h>
 #include "ws2812_i2s/ws2812_i2s.h"
 
+#include "LedUtilities.h"
+
 #define LED_ON 0                // this is the value to write to GPIO for led on (0 = GPIO low)
 #define LED_INBUILT_GPIO 2      // this is the onboard LED used to show on/off only
 #define LED_COUNT 127            // this is the number of WS2812B leds on the strip
@@ -294,6 +296,8 @@ void ResetTextColor()
 void user_init(void)
 {
    uart_set_baud(0, 115200);
+
+   xTaskCreate(DoAThingTask, "do_a_thing_task", 1024, NULL, 2, NULL);
 
    printf("Create QR code with password: ");
    SetTextToBlue();

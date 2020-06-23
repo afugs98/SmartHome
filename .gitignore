@@ -8,3 +8,4 @@ examples/firmware/
 .cproject
 .project
 .settings/
+.metadata/
